@@ -8,15 +8,10 @@ def manga_lastest_chapter(anilist_manga_id):
         chapters = 0
 
         anilist_manga = anilist.get_manga(anilist_manga_id)
-        if not anilist_manga:
-            return jsonify({"error": "[ANILIST] Manga not found."}), 404
-        anilist_manga = anilist_manga["Media"]
-
         anilist_data = {
             "title": anilist_manga["title"]["romaji"],
             "id": anilist_manga_id
         }
-
         if anilist_manga["status"] == "FINISHED":
             return jsonify(build_data(anilist_data, mangaupdates_data, anilist_manga["chapters"]))
 
@@ -25,7 +20,6 @@ def manga_lastest_chapter(anilist_manga_id):
         mangaupdates_manga = mangaupdates.search_manga(title, year)
         if not mangaupdates_manga:
             return jsonify({"error": "[MANGAUPDATES] Manga not found."}), 404
-
         mangaupdates_data = {
             "title": mangaupdates_manga["title"],
             "id": mangaupdates_manga["series_id"]
@@ -36,7 +30,6 @@ def manga_lastest_chapter(anilist_manga_id):
             "date", 
             "desc"
         )
-
         filtered_results = list(filter(isnum, releases))
         if len(filtered_results) > 0:
             chapters = max(int(r["record"]["chapter"]) for r in filtered_results)

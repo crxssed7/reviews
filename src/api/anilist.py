@@ -35,4 +35,5 @@ def get_manga(anilist_manga_id):
         'id': anilist_manga_id
     }
 
-    return request(query, variables)
+    data = request(query, variables)
+    return data["Media"]
