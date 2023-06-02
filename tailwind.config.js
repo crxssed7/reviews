@@ -5,6 +5,14 @@ module.exports = {
     ],
     theme: {
         extend: {},
+        fontFamily: {
+            sans: ['"Montserrat"', 'sans-serif'],
+        },
+        screens: {
+            'sm': '640px',
+            'md': '960px',
+            'lg': '1200px'
+        }
     },
     plugins: [],
 }

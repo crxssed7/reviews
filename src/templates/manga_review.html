@@ -1,5 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ media_list['media']['title']['romaji'] }}</h1>
+<div class="grid grid-cols-1 md:grid-cols-4">
+    <div class="col-span-1 hidden md:block">
+        <div class="flex flex-col gap-4 text-center sm:sticky sm:top-[0px] bg-black h-screen overflow-auto border-r border-white">
+            <div class="p-8">
+                <h3>Other current manga</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-1 md:col-span-3 p-4">
+        <div id="bg-img" class="rounded mb-4 w-full h-[300px] bg-no-repeat bg-cover bg-center"></div>
+        <div class="flex gap-4">
+            <div id="cover-img" class="rounded min-w-[150px] h-[225px] bg-no-repeat bg-cover bg-center"></div>
+            <div class="flex-col w-full">
+                <h1 class="text-2xl font-bold">{{ media_list['media']['title']['romaji'] }}</h1>
+                {% if media_list['media']['title']['english'] %}
+                    <p class="font-thin">{{ media_list['media']['title']['english'] }}</p>
+                {% endif %}
+                <hr class="border-white my-4">
+                {% if media_list['notes'] %}
+                    <p class="italic">"{{ media_list['notes'] }}"</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const bannerImage = "{{ media_list['media']['bannerImage'] }}";
+    const coverImage = "{{ media_list['media']['coverImage']['large'] }}";
+
+    const bgImg = document.getElementById("bg-img");
+    bgImg.style = `background-image: url('${bannerImage}')`;
+    const coverImg = document.getElementById("cover-img");
+    coverImg.style = `background-image: url('${coverImage}')`;
+</script>
 {% endblock %}
