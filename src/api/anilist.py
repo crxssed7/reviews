@@ -101,19 +101,19 @@ def get_media_list(anilist_manga_id, user_id):
     data = request(query, variables)
     return data["MediaList"]
 
-def get_media_list_group(status, user_id):
-    query = """
-    query ($userId: Int, $mediaId: Int) {
-      MediaList(userId: $userId, mediaId: $mediaId) {
-        %LIST_DATA%
-      }
-    }
-    """.replace("%LIST_DATA%", LIST_DATA)
+# def get_media_list_group(status, user_id):
+#     query = """
+#     query ($userId: Int, $mediaId: Int) {
+#       MediaList(userId: $userId, mediaId: $mediaId) {
+#         %LIST_DATA%
+#       }
+#     }
+#     """.replace("%LIST_DATA%", LIST_DATA)
 
-    variables = {
-        "mediaId": anilist_manga_id,
-        "userId": user_id
-    }
+#     variables = {
+#         "mediaId": anilist_manga_id,
+#         "userId": user_id
+#     }
 
-    data = request(query, variables)
-    return data["MediaList"]
+#     data = request(query, variables)
+#     return data["MediaList"]

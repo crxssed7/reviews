@@ -1,38 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="grid grid-cols-1 md:grid-cols-4">
-    <div class="col-span-1 hidden md:block">
-        <div class="flex flex-col gap-4 text-center sm:sticky sm:top-[0px] bg-black h-screen overflow-auto border-r border-white">
-            <div class="p-8">
-                <h3>Other current manga</h3>
+<div class="p-4">
+    <div id="bg-img" class="rounded w-full h-[300px] bg-no-repeat bg-cover bg-center"></div>
+</div>
+<div class="mx-auto max-w-7xl px-4">
+    <div class="flex gap-4">
+        <div id="cover-img" class="rounded min-w-[150px] h-[225px] bg-no-repeat bg-cover bg-center"></div>
+        <div class="flex-col w-full">
+            <div class="flex flex-row justify-between">
+                <h1 class="text-2xl font-bold">{{ presenter.media.romaji }}</h1>
+                <div class="flex gap-4">
+                    {% if presenter.collecting %}
+                        <i class="fa-solid fa-bookmark custom-colour"></i>
+                    {% endif %}
+                    {% if presenter.favourite %}
+                        <i class="fa-solid fa-heart custom-colour"></i>
+                    {% endif %}
+                </div>
+            </div>
+            {% if presenter.media.english_title %}
+                <p class="font-thin">{{ presenter.media.english_title }}</p>
+            {% endif %}
+            <hr class="border-2 custom-colour my-4">
+            {% if presenter.notes %}
+                <p class="italic">"{{ presenter.notes }}"</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="grid grid-cols-1 grid-flow-row-dense gap-4 sm:grid-cols-2 my-8">
+        <div class="col-span-1">
+            <h3 class="text-2xl font-bold mb-4">Review:</h3>
+            <p>{{ review_content }}</p>
+        </div>
+        <div class="col-span-1 sm:order-last order-first">
+            <div class="mb-4">
+                <h3 class="text-2xl font-bold mb-4">Progress:</h3>
+                <div class="flex justify-center">
+                    {{ progress_knob.to_html() | safe }}
+                </div>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-2xl font-bold mb-4">Rating:</h3>
+                <div class="flex justify-center">
+                    {{ score_knob.to_html() | safe }}
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-span-1 md:col-span-3 p-4">
-        <div id="bg-img" class="rounded mb-4 w-full h-[300px] bg-no-repeat bg-cover bg-center"></div>
-        <div class="flex gap-4">
-            <div id="cover-img" class="rounded min-w-[150px] h-[225px] bg-no-repeat bg-cover bg-center"></div>
-            <div class="flex-col w-full">
-                <h1 class="text-2xl font-bold">{{ media_list['media']['title']['romaji'] }}</h1>
-                {% if media_list['media']['title']['english'] %}
-                    <p class="font-thin">{{ media_list['media']['title']['english'] }}</p>
-                {% endif %}
-                <hr class="border-white my-4">
-                {% if media_list['notes'] %}
-                    <p class="italic">"{{ media_list['notes'] }}"</p>
-                {% endif %}
-            </div>
-        </div>
+    <div class="my-8">
+        <h3 class="text-2xl font-bold mb-4">Panels:</h3>
+        <p>I haven't found any interesting panels yet.</p>
     </div>
 </div>
 <script>
-    const bannerImage = "{{ media_list['media']['bannerImage'] }}";
-    const coverImage = "{{ media_list['media']['coverImage']['large'] }}";
+    const bannerImage = "{{ presenter.media.banner_image }}";
+    const coverImage = "{{ presenter.media.cover_image }}";
+    const color = "{{ presenter.media.color }}"
 
     const bgImg = document.getElementById("bg-img");
     bgImg.style = `background-image: url('${bannerImage}')`;
     const coverImg = document.getElementById("cover-img");
     coverImg.style = `background-image: url('${coverImage}')`;
+    const colouredElements = document.getElementsByClassName("custom-colour");
+    for (let element of colouredElements) {
+        element.style = `border-color: ${color}; color: ${color};`;
+    }
 </script>
 {% endblock %}
