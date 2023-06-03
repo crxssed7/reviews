@@ -25,11 +25,11 @@ def manga_review(anilist_manga_id):
 
         if presenter.is_current() and presenter.media.is_finished():
             # Don't bother getting reviews for a currently reading finished manga
-            review_content = "I'm currently reading this manga, so I haven't wrote a review yet."
+            review_content = "I'm currently reading this manga, so I haven't written a review yet."
         else:
             # TODO: Get review
             review = None
-            review_content = "I haven't wrote a review for this manga yet." if not review else review.content
+            review_content = "I haven't written a review for this manga yet." if not review else review.content
 
         return render_template("manga_review.html", presenter=presenter, score_knob=score_knob, progress_knob=progress_knob, review_content=review_content)
     except APIException as exception:
