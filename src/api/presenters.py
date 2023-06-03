@@ -52,7 +52,7 @@ class ScorePresenter(KnobPresenter):
         super(ScorePresenter, self).__init__(percent, radius, color)
 
     def get_text(self):
-        return f"{self.percent} / 100"
+        return f"{int(self.percent / 10)} / 10"
 
 class ProgressPresenter(KnobPresenter):
     def get_text(self):
