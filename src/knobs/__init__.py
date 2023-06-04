@@ -38,7 +38,7 @@ class BaseKnob:
                 cy="{dimensions}"
                 transform="rotate(-90 {dimensions} {dimensions})"
             />
-            <text x="50%" y="50%" fill="{color}" style="font-family: 'Montserrat'; font-size: 75px; font-weight: bold;" dominant-baseline="middle" text-anchor="middle">{text}</text>
+            <text x="50%" y="50%" fill="{color}" style="font-family: 'Montserrat'; font-size: 70px; font-weight: bold;" dominant-baseline="middle" text-anchor="middle">{text}</text>
         </svg>
         """.format(dimensions=self.dimensions, viewport=self.viewport, radius=self.radius, circumfrence=self.circumfrence, percent_as_circle=self.percent_as_circle, color=self.color, text=self.text)
 
@@ -46,13 +46,26 @@ class BaseKnob:
         return ""
 
 class ScoreKnob(BaseKnob):
+    SCORE_TEXT = {
+        1: "Horrific",
+        2: "Bad",
+        3: "Bad",
+        4: "Bad",
+        5: "Meh",
+        6: "Meh",
+        7: "Good",
+        8: "Good",
+        9: "Amazing",
+        10: "Terrific"
+    }
+
     def __init__(self, percent, radius, color):
         if percent:
             percent *= 10
         super(ScoreKnob, self).__init__(percent, radius, color)
 
     def get_text(self):
-        return f"{int(self.percent / 10)} / 10"
+        return self.SCORE_TEXT[self.percent / 10]
 
 class ProgressKnob(BaseKnob):
     def get_text(self):
