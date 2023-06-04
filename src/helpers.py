@@ -3,6 +3,9 @@ from flask import current_app
 from api.exceptions import APIException
 from api.mangaupdates import search_manga, search_releases
 
+# TODO: Move to dotenv
+USER_ID = 5613718
+
 def isnum(record):
     value = record["record"]["chapter"]
     return str(value).isdigit()

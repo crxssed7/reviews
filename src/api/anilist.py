@@ -55,11 +55,16 @@ name
 isCustomList
 isSplitCompletedList
 status
-name
 entries {
   %LIST_DATA%
 }
-""".replace("%LIST_GROUP_DATA%", LIST_DATA)
+""".replace("%LIST_DATA%", LIST_DATA)
+
+LIST_COLLECTION_DATA = """
+lists {
+    %LIST_GROUP_DATA%
+}
+""".replace("%LIST_GROUP_DATA%", LIST_GROUP_DATA)
 
 def request(query, variables):
     response = requests.post(BASE_URL, json={'query': query, 'variables': variables})
@@ -101,19 +106,19 @@ def get_media_list(anilist_manga_id, user_id):
     data = request(query, variables)
     return data["MediaList"]
 
-# def get_media_list_group(status, user_id):
-#     query = """
-#     query ($userId: Int, $mediaId: Int) {
-#       MediaList(userId: $userId, mediaId: $mediaId) {
-#         %LIST_DATA%
-#       }
-#     }
-#     """.replace("%LIST_DATA%", LIST_DATA)
+def get_media_list_collection(user_id, sort_fields):
+    query = """
+    query ($userId: Int, $sort: [MediaListSort]) {
+      MediaListCollection(userId: $userId, type: MANGA, sort: $sort) {
+        %LIST_COLLECTION_DATA%
+      }
+    }
+    """.replace("%LIST_COLLECTION_DATA%", LIST_COLLECTION_DATA)
 
-#     variables = {
-#         "mediaId": anilist_manga_id,
-#         "userId": user_id
-#     }
+    variables = {
+        "userId": user_id,
+        "sort": sort_fields
+    }
 
-#     data = request(query, variables)
-#     return data["MediaList"]
+    data = request(query, variables)
+    return data["MediaListCollection"]

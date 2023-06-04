@@ -4,12 +4,12 @@ from flask import render_template
 from api.anilist import get_media_list
 from api.exceptions import APIException
 from api.presenters import MediaListPresenter
-from helpers import latest_chapter_by_anilist
+from helpers import latest_chapter_by_anilist, USER_ID
 from knobs import ScoreKnob, ProgressKnob
 
 def manga_review(anilist_manga_id):
     try:
-        media_list = get_media_list(anilist_manga_id, 5613718)
+        media_list = get_media_list(anilist_manga_id, USER_ID)
         presenter = MediaListPresenter(media_list)
         score_knob = ScoreKnob(presenter.score, 200, presenter.media.color)
 
