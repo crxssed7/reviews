@@ -1,7 +1,9 @@
 module.exports = {
     content: [
         "./src/templates/**/*.html",
-        "./src/static/src/**/*.js"
+        "./src/static/src/**/*.js",
+        "./src/api/presenters/**/*.py",
+        "./src/knobs/**/*.py"
     ],
     theme: {
         extend: {},
