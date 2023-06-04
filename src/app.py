@@ -7,7 +7,7 @@ def create_app():
 
     config = {
         "DEBUG": True,
-        "CACHE_TYPE": "SimpleCache",
+        "CACHE_TYPE": "RedisCache",
         "CACHE_DEFAULT_TIMEOUT": 120
     }
 

@@ -1,5 +1,6 @@
 from flask import jsonify
-from api import anilist, mangaupdates, exceptions, presenters
+from api import anilist, exceptions, presenters
+from helpers import latest_chapter_by_anilist
 
 def manga_lastest_chapter(anilist_manga_id):
     anilist_data = None
@@ -20,7 +21,7 @@ def manga_lastest_chapter(anilist_manga_id):
     if media.status == "FINISHED":
         return jsonify(build_data(anilist_data, mangaupdates_data, media.chapters))
 
-    chapters, mangaupdates_data = mangaupdates.latest_chapter_by_anilist(media)
+    chapters, mangaupdates_data = latest_chapter_by_anilist(media)
 
     return jsonify(build_data(anilist_data, mangaupdates_data, chapters))
 
