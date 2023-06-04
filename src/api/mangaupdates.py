@@ -1,4 +1,5 @@
 import requests
+
 from .exceptions import APIException
 
 BASE_URL = "https://api.mangaupdates.com/v1/"

@@ -4,8 +4,8 @@ from flask import render_template
 from api.anilist import get_media_list
 from api.exceptions import APIException
 from api.presenters import MediaListPresenter
+from helpers import latest_chapter_by_anilist
 from knobs import ScoreKnob, ProgressKnob
-from .latest_chapter import latest_chapter
 
 def manga_review(anilist_manga_id):
     try:
@@ -16,7 +16,7 @@ def manga_review(anilist_manga_id):
         if presenter.media.chapters:
             maximum = presenter.media.chapters
         else:
-            chapters, _ = latest_chapter(presenter.media)
+            chapters, _ = latest_chapter_by_anilist(presenter.media)
             maximum = chapters if presenter.progress < chapters else presenter.progress
         if maximum > 0:
             percent = math.floor((presenter.progress / maximum) * 100)
