@@ -2,6 +2,12 @@
 
 ## Setup
 
+Install Redis (used for caching):
+
+```bash
+sudo pacman -S redis
+```
+
 Create a virtual environment and activate it:
 
 ```bash
