@@ -36,8 +36,14 @@ class BaseKnob:
                 r="{radius}"
                 cx="{dimensions}"
                 cy="{dimensions}"
-                transform="rotate(-90 {dimensions} {dimensions})"
-            />
+                transform="rotate(-90 {dimensions} {dimensions})">
+                    <animate
+                        attributeName="stroke-dashoffset"
+                        values="{circumfrence};{percent_as_circle}"
+                        dur="0.5s"
+                        repeatCount="1"
+                    />
+            </circle>
             <text x="50%" y="50%" fill="{color}" style="font-family: 'Montserrat'; font-size: 70px; font-weight: bold;" dominant-baseline="middle" text-anchor="middle">{text}</text>
         </svg>
         """.format(dimensions=self.dimensions, viewport=self.viewport, radius=self.radius, circumfrence=self.circumfrence, percent_as_circle=self.percent_as_circle, color=self.color, text=self.text)
