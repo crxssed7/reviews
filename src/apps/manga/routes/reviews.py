@@ -3,14 +3,15 @@ from flask import render_template
 
 from api.anilist import get_media_list
 from api.exceptions import APIException
-from api.presenters import MediaListPresenter, ScorePresenter, ProgressPresenter
+from api.presenters import MediaListPresenter
+from knobs import ScoreKnob, ProgressKnob
 from .latest_chapter import latest_chapter
 
 def manga_review(anilist_manga_id):
     try:
         media_list = get_media_list(anilist_manga_id, 5613718)
         presenter = MediaListPresenter(media_list)
-        score_knob = ScorePresenter(presenter.score, 200, presenter.media.color)
+        score_knob = ScoreKnob(presenter.score, 200, presenter.media.color)
 
         if presenter.media.chapters:
             maximum = presenter.media.chapters
@@ -21,7 +22,7 @@ def manga_review(anilist_manga_id):
             percent = math.floor((presenter.progress / maximum) * 100)
         else:
             percent = 0
-        progress_knob = ProgressPresenter(percent, 200, presenter.media.color)
+        progress_knob = ProgressKnob(percent, 200, presenter.media.color)
 
         if presenter.is_current() and presenter.media.is_finished():
             # Don't bother getting reviews for a currently reading finished manga
