@@ -7,6 +7,7 @@ class BasePresenter:
 class MediaPresenter(BasePresenter):
     def __init__(self, data):
         super(MediaPresenter, self).__init__(data)
+        self.id = self.data["id"]
         self.romaji = self.data["title"]["romaji"]
         self.english_title = self.data["title"]["english"]
         self.banner_image = self.data["bannerImage"] or url_for("static", filename="img/default_banner.png")
