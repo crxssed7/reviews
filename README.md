@@ -2,6 +2,13 @@
 
 ## Setup
 
+Create a virtual environment and activate it:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
 Install dependencies with pipenv:
 
 ```bash
