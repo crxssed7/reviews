@@ -1,3 +1,5 @@
+from flask import url_for
+
 class BasePresenter:
     def __init__(self, data):
         self.data = data
@@ -7,9 +9,8 @@ class MediaPresenter(BasePresenter):
         super(MediaPresenter, self).__init__(data)
         self.romaji = self.data["title"]["romaji"]
         self.english_title = self.data["title"]["english"]
-        # TODO: Set defaults
-        self.banner_image = self.data["bannerImage"] or ""
-        self.cover_image = self.data["coverImage"]["large"] or "https://tankobon.net/static/img/noposter.582688085a9c.png"
+        self.banner_image = self.data["bannerImage"] or url_for("static", filename="img/default_banner.png")
+        self.cover_image = self.data["coverImage"]["large"]
         self.color = self.data["coverImage"]["color"] or "#e5e7eb"
         self.chapters = self.data["chapters"]
         self.status = self.data["status"]
