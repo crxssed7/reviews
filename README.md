@@ -1,5 +1,13 @@
 # reviews
 
+## What is this?
+
+This is a simple Flask webapp that interfaces with the AniList api and retrieves a users manga list. It also displays any reviews made by the user.
+
+## How do I use this?
+
+First you need to create two custom lists on AniList: Collecting and Favourites. They're pretty self explanitory. You then need to follow the below steps, making sure to put your USER_ID in the `.env` file.
+
 ## Setup
 
 Install Redis (used for caching):
