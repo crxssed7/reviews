@@ -66,14 +66,19 @@ lists {
 }
 """.replace("%LIST_GROUP_DATA%", LIST_GROUP_DATA)
 
-def request(query, variables):
+def get_data(data, anilist_type):
+    return None if data is None else data[anilist_type]
+
+def request(query, variables, safe = False):
     response = requests.post(BASE_URL, json={'query': query, 'variables': variables})
     if response.ok:
         data = response.json()
         return data["data"]
+    if safe:
+        return None
     raise APIException(f"[ANILIST:{response.status_code}] There was an error. Raw error: {response.json()}", response.status_code)
 
-def get_manga(anilist_manga_id):
+def get_manga(anilist_manga_id, safe = False):
     query = """
     query ($id: Int) {
       Media (id: $id, type: MANGA) {
@@ -86,10 +91,10 @@ def get_manga(anilist_manga_id):
         "id": anilist_manga_id
     }
 
-    data = request(query, variables)
-    return data["Media"]
+    data = request(query, variables, safe=safe)
+    return get_data(data, "Media")
 
-def get_media_list(anilist_manga_id, user_id):
+def get_media_list(anilist_manga_id, user_id, safe = False):
     query = """
     query ($userId: Int, $mediaId: Int) {
       MediaList(userId: $userId, mediaId: $mediaId) {
@@ -103,10 +108,10 @@ def get_media_list(anilist_manga_id, user_id):
         "userId": user_id
     }
 
-    data = request(query, variables)
-    return data["MediaList"]
+    data = request(query, variables, safe=safe)
+    return get_data(data, "MediaList")
 
-def get_media_list_collection(user_id, sort_fields):
+def get_media_list_collection(user_id, sort_fields, safe = False):
     query = """
     query ($userId: Int, $sort: [MediaListSort]) {
       MediaListCollection(userId: $userId, type: MANGA, sort: $sort) {
@@ -120,5 +125,23 @@ def get_media_list_collection(user_id, sort_fields):
         "sort": sort_fields
     }
 
-    data = request(query, variables)
-    return data["MediaListCollection"]
+    data = request(query, variables, safe=safe)
+    return get_data(data, "MediaListCollection")
+
+def get_review(user_id, anilist_manga_id, safe = False):
+    query = """
+    query ($userId: Int, $mediaId: Int) {
+        Review(userId: $userId, mediaId: $mediaId) {
+		    body
+            summary
+        }
+    }
+    """
+
+    variables = {
+        "userId": user_id,
+        "mediaId": anilist_manga_id
+    }
+
+    data = request(query, variables, safe=safe)
+    return get_data(data, "Review")

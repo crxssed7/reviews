@@ -1,7 +1,7 @@
 import math
 from flask import render_template
 
-from api.anilist import get_media_list
+from api.anilist import get_media_list, get_review
 from api.exceptions import APIException
 from api.presenters import MediaListPresenter
 from helpers import latest_chapter_by_anilist, USER_ID
@@ -28,9 +28,8 @@ def manga_review(anilist_manga_id):
             # Don't bother getting reviews for a currently reading finished manga
             review_content = "I'm currently reading this manga, so I haven't written a review yet."
         else:
-            # TODO: Get review
-            review = None
-            review_content = "I haven't written a review for this manga yet." if not review else review.content
+            review = get_review(USER_ID, anilist_manga_id, safe=True)
+            review_content = "I haven't written a review for this manga yet." if not review else review["body"]
 
         return render_template("manga_review.html", presenter=presenter, score_knob=score_knob, progress_knob=progress_knob, review_content=review_content)
     except APIException as exception:
