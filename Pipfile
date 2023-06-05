@@ -8,6 +8,7 @@ flask = "*"
 requests = "*"
 flask-caching = "*"
 redis = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

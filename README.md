@@ -27,6 +27,13 @@ Install node packages:
 npm install
 ```
 
+Rename `.env.example` and fill in your details:
+
+```bash
+mv .env.example .env
+vim .env
+```
+
 ## Commands
 
 Run the dev server:
