@@ -25,6 +25,7 @@ class MediaListPresenter(BasePresenter):
     def __init__(self, data):
         super(MediaListPresenter, self).__init__(data)
         self.media = MediaPresenter(self.data["media"])
+        # TODO: What if the user does not have these lists?
         self.collecting = self.data["customLists"]["Collecting"]
         self.favourite = self.data["customLists"]["Favourites"]
         self.notes = self.data["notes"]
@@ -78,7 +79,10 @@ class MediaListGroupPresenter(BasePresenter):
             self.entries.append(MediaListPresenter(entry))
 
     def sort_by(self, attr, reverse = False):
-        self.entries.sort(key=lambda x: getattr(x, attr), reverse=reverse)
+        ordered = self.entries
+        ordered = list(filter(lambda entry : getattr(entry, attr) != None, ordered))
+        ordered.sort(key=lambda x: getattr(x, attr), reverse=reverse)
+        self.entries = ordered
         return self
 
 class MediaListCollectionPresenter(BasePresenter):
@@ -89,5 +93,7 @@ class MediaListCollectionPresenter(BasePresenter):
             self.lists.append(MediaListGroupPresenter(entry))
 
     def get_status(self, status):
-        status_list = filter(lambda list_data : list_data.status == status, self.lists)
-        return list(status_list)[0]
+        status_list = list(filter(lambda list_data : list_data.status == status, self.lists))
+        if len(status_list) > 0:
+            return status_list[0]
+        return MediaListGroupPresenter({"name": "", "isCustomList": False, "status": status, "entries": []})
