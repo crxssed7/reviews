@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 from apps.manga.views import manga
 
+from helpers import USER_NAME, USER_AVATAR
+
 load_dotenv()
 
 def create_app():
@@ -16,6 +18,8 @@ def create_app():
     }
 
     app.config.from_mapping(config)
+    app.jinja_env.globals.update(username=USER_NAME)
+    app.jinja_env.globals.update(avatar=USER_AVATAR)
     app.register_blueprint(manga, url_prefix="/")
 
     cache = Cache(app)

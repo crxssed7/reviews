@@ -15,4 +15,14 @@ def manga_index():
     len_completed = len(completed)
     len_paused = len(paused)
     len_planning = len(planning)
-    return render_template("manga_index.html", reading=reading, completed=completed, paused=paused, planning=planning, len_reading=len_reading, len_completed=len_completed, len_paused=len_paused, len_planning=len_planning)
+    return render_template(
+        "manga_index.html",
+        reading=reading,
+        completed=completed,
+        paused=paused,
+        planning=planning,
+        len_reading=len_reading,
+        len_completed=len_completed,
+        len_paused=len_paused,
+        len_planning=len_planning
+    )

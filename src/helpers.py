@@ -6,6 +6,9 @@ from api.exceptions import APIException
 from api.mangaupdates import search_manga, search_releases
 
 USER_ID = os.getenv("USER_ID")
+USER_NAME = os.getenv("USER_NAME")
+# TODO: Set a better default
+USER_AVATAR = os.getenv("USER_AVATAR", "")
 
 def isnum(record):
     value = record["record"]["chapter"]
