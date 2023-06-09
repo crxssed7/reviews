@@ -9,6 +9,7 @@ requests = "*"
 flask-caching = "*"
 redis = "*"
 python-dotenv = "*"
+gunicorn = "*"
 
 [dev-packages]
 
