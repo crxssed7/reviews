@@ -2,13 +2,13 @@ import os
 
 from flask import Flask
 from flask_caching import Cache
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 from apps.manga.views import manga
 
 from helpers import USER_NAME, USER_AVATAR
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 def create_app():
     app = Flask(__name__)
