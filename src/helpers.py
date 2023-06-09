@@ -1,14 +1,16 @@
-import os
-
+from dotenv import dotenv_values
 from flask import current_app
 
 from api.anilist import get_review
 from api.exceptions import APIException
 from api.mangaupdates import search_manga, search_releases
 
-USER_ID = os.getenv("USER_ID", "5613718")
-USER_NAME = os.getenv("USER_NAME")
-USER_AVATAR = os.getenv("USER_AVATAR", "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png")
+ENV = dotenv_values()
+
+USER_ID = ENV.get("USER_ID", "5613718")
+USER_NAME = ENV.get("USER_NAME")
+USER_AVATAR = ENV.get("USER_AVATAR", "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png")
+DEBUG = ENV.get("REVIEWS_DEBUG", "False").lower() in ("true", "1", "t")
 
 def isnum(record):
     value = record["record"]["chapter"]

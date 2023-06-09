@@ -2,21 +2,17 @@ import os
 
 from flask import Flask
 from flask_caching import Cache
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv, dotenv_values
 
 from apps.manga.views import manga
 
-from helpers import USER_NAME, USER_AVATAR
-
-load_dotenv(find_dotenv())
+from helpers import USER_NAME, USER_AVATAR, DEBUG
 
 def create_app():
     app = Flask(__name__)
 
-    debug = os.getenv("REVIEWS_DEBUG", "False").lower() in ("true", "1", "t")
-
     config = {
-        "DEBUG": debug,
+        "DEBUG": DEBUG,
         "CACHE_TYPE": "RedisCache",
         "CACHE_DEFAULT_TIMEOUT": 259200
     }
