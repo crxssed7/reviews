@@ -2,13 +2,13 @@ import os
 
 from flask import current_app
 
+from api.anilist import get_review
 from api.exceptions import APIException
 from api.mangaupdates import search_manga, search_releases
 
-USER_ID = os.getenv("USER_ID")
+USER_ID = os.getenv("USER_ID", "5613718")
 USER_NAME = os.getenv("USER_NAME")
-# TODO: Set a better default
-USER_AVATAR = os.getenv("USER_AVATAR", "")
+USER_AVATAR = os.getenv("USER_AVATAR", "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png")
 
 def isnum(record):
     value = record["record"]["chapter"]
@@ -51,3 +51,20 @@ def latest_chapter_by_anilist(anilist_media):
         return chapters, mangaupdates_data
     except APIException:
         return 0, None
+
+def get_review_content(presenter):
+    if presenter.is_current() and presenter.media.is_finished():
+        # Don't bother getting reviews for a currently reading finished manga
+        return "I'm currently reading this manga, so I haven't written a review yet."
+
+    cache = current_app.cache
+
+    existing_review_cache = cache.get(f"{presenter.media.id}.review")
+    if existing_review_cache:
+        return existing_review_cache
+
+    review = get_review(USER_ID, presenter.media.id, safe=True)
+    if review:
+        return review["body"]
+
+    return presenter.notes if presenter.notes else "I haven't written a review for this manga yet."

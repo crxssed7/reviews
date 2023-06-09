@@ -25,9 +25,13 @@ class MediaListPresenter(BasePresenter):
     def __init__(self, data):
         super(MediaListPresenter, self).__init__(data)
         self.media = MediaPresenter(self.data["media"])
-        # TODO: What if the user does not have these lists?
-        self.collecting = self.data["customLists"]["Collecting"]
-        self.favourite = self.data["customLists"]["Favourites"]
+        self.custom_lists = self.data.get("customLists")
+        if self.custom_lists:
+            self.collecting = self.custom_lists.get("Collecting", False)
+            self.favourite = self.custom_lists.get("Favourites", False)
+        else:
+            self.collecting = False
+            self.favourite = False
         self.notes = self.data["notes"]
         self.score = self.data["score"] if self.data["score"] > 0 else None
         self.status = self.data["status"]
