@@ -4,27 +4,28 @@ let shown = false;
 
 hamburger.addEventListener('click', () => {
     if (shown) {
-        fadeout(toc);
+        fadeout();
     } else {
-        fadein(toc);
+        fadein();
     }
     shown = !shown;
 });
 
 toc.addEventListener('click', () => {
-    fadeout(toc);
+    fadeout();
     shown = false;
 });
 
 document.addEventListener('click', (event) => {
     const target = event.target;
     if (target.id !== hamburger.id && target.id !== toc.id) {
-        fadeout(toc);
+        fadeout();
         shown = false;
     }
 })
 
-function fadeout(element) {
+function fadeout() {
+    const element = toc;
     var op = 1;  // initial opacity
     var timer = setInterval(function () {
         if (op <= 0.1){
@@ -37,7 +38,8 @@ function fadeout(element) {
     }, 5);
 }
 
-function fadein(element) {
+function fadein() {
+    const element = toc;
     var op = 0.1;  // initial opacity
     element.style.opacity = op;
     element.style.display = 'block';
