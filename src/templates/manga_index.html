@@ -1,13 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="relative z-10">
+    <div class="fixed p-8 top-0 left-0">
+        <i id="hamburger" class="fa-solid fa-bars p-1 text-4xl cursor-pointer"></i>
+    </div>
+    <div id="toc" class="fixed hidden p-6 bg-white text-black font-bold top-[100px] left-[35px] rounded-lg">
+        <div class="flex flex-col gap-4">
+            <a href="#reading">Reading</a>
+            <a href="#completed">Completed</a>
+            <a href="#planning">Planning</a>
+            <a href="#paused">Paused</a>
+        </div>
+    </div>
+</div>
+
 <div class="m-6 flex flex-col items-center justify-center content-center text-center p-20">
     <img src="{{ avatar }}" alt="" class="m-3.5 border-4 border-slate-50 rounded-full w-[100px] h-[100px]">
     <h1 class="text-4xl font-bold">{{ username }} manga reviews</h1>
 </div>
 
 <div class="mx-auto max-w-7xl px-4">
-    <div class="my-4 flex flex-col items-center">
+    <div class="my-4 flex flex-col items-center" id="reading">
         <h3 class="underline text-2xl font-bold my-8">Reading - {{ len_reading }}</h1>
         <div class="flex justify-center flex-wrap gap-2">
             {% for entry in reading %}
@@ -15,7 +29,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="my-4 flex flex-col items-center">
+    <div class="my-4 flex flex-col items-center" id="completed">
         <h3 class="underline text-2xl font-bold my-8">Completed - {{ len_completed }}</h1>
         <div class="flex justify-center flex-wrap gap-2">
             {% for entry in completed %}
@@ -23,7 +37,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="my-4 flex flex-col items-center">
+    <div class="my-4 flex flex-col items-center" id="planning">
         <h3 class="underline text-2xl font-bold my-8">Planning - {{ len_planning }}</h1>
         <div class="flex justify-center flex-wrap gap-2">
             {% for entry in planning %}
@@ -31,7 +45,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="my-4 flex flex-col items-center">
+    <div class="my-4 flex flex-col items-center" id="paused">
         <h3 class="underline text-2xl font-bold my-8">Paused - {{ len_paused }}</h1>
         <div class="flex justify-center flex-wrap gap-2">
             {% for entry in paused %}
@@ -40,4 +54,6 @@
         </div>
     </div>
 </div>
+
+<script src="{{ url_for('static',filename='js/table_of_contents.js') }}"></script>
 {% endblock %}

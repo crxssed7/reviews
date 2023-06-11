@@ -1,5 +1,6 @@
 import datetime
 import math
+
 from flask import url_for
 
 from helpers import get_cached_latest_chapter, latest_chapter_by_anilist
