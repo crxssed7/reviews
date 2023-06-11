@@ -4,8 +4,9 @@
     "tailwindcss": "^3.3.2"
   },
   "scripts": {
-    "dev": "./dev",
-    "tailwind": "./css",
-    "start": "concurrently \"npm run dev\" \"npm run tailwind\""
+    "dev": "python src/app.py",
+    "build:css": "npx tailwindcss -i ./src/static/src/input.css -o ./src/static/dist/css/output.css",
+    "css": "npx tailwindcss -i ./src/static/src/input.css -o ./src/static/dist/css/output.css --watch",
+    "start": "concurrently \"npm run dev\" \"npm run css\""
   }
 }
