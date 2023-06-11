@@ -16,10 +16,13 @@ def isnum(record):
     value = record["record"]["chapter"]
     return str(value).isdigit()
 
+def get_cached_latest_chapter(anilist_media):
+    return current_app.cache.get(f"{anilist_media.id}.latest_chapter")
+
 def latest_chapter_by_anilist(anilist_media):
     cache = current_app.cache
 
-    existing_cache = cache.get(f"{anilist_media.id}.latest_chapter")
+    existing_cache = get_cached_latest_chapter(anilist_media)
     if existing_cache:
         return existing_cache["chapters"], existing_cache["data"]
 

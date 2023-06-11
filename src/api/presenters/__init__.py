@@ -1,5 +1,8 @@
 import datetime
+import math
 from flask import url_for
+
+from helpers import get_cached_latest_chapter, latest_chapter_by_anilist
 
 class BasePresenter:
     def __init__(self, data):
@@ -56,10 +59,32 @@ class MediaListPresenter(BasePresenter):
 
         return datetime.date(year, month, day)
 
+    def get_maximum(self, cache=True):
+        if self.media.chapters:
+            return self.media.chapters
+
+        if cache:
+            cached = get_cached_latest_chapter(self.media)
+            if cached:
+                chapters = cached.get("chapters", 0)
+                return chapters if self.progress < chapters else self.progress
+            return self.progress
+
+        chapters, _ = latest_chapter_by_anilist(self.media)
+        return chapters if self.progress < chapters else self.progress
+
+    def to_percent(self, cache=True):
+        maximum = self.get_maximum(cache=cache)
+
+        if maximum > 0:
+            return math.floor((self.progress / maximum) * 100)
+        return 0
+
     def to_html(self):
         collecting_icon = "<i class='m-2 fa-solid fa-bookmark'></i>" if self.collecting else ""
         favourite_icon = "<i class='m-2 fa-solid fa-heart'></i>" if self.favourite else ""
         score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>" if self.score else ""
+        progress = f"<small class='m-2 font-bold'>{self.to_percent()}%</small>"
         return f"""
         <a href="/manga/{self.media.id}" title="{self.media.romaji}">
             <div class="relative p-2 rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center" style="background-image: url('{self.media.cover_image}');">
@@ -67,6 +92,9 @@ class MediaListPresenter(BasePresenter):
                     {score_icon}
                     {favourite_icon}
                     {collecting_icon}
+                </div>
+                <div class="text-gray-100 absolute rounded inline-block right-2 top-2 backdrop-blur-lg" style="background-color: {self.media.color}80;">
+                    {progress}
                 </div>
             </div>
         </a>
