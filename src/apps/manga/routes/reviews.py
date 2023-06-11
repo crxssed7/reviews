@@ -1,4 +1,3 @@
-import math
 from flask import render_template, current_app
 
 from api.anilist import get_media_list
