@@ -47,6 +47,9 @@ class MediaListPresenter(BasePresenter):
     def is_current(self):
         return self.status == "CURRENT"
 
+    def is_completed(self):
+        return self.status == "COMPLETED"
+
     def generate_date(self, date_dict):
         if not date_dict:
             return None
@@ -75,6 +78,9 @@ class MediaListPresenter(BasePresenter):
         return chapters if self.progress < chapters else self.progress
 
     def to_percent(self, cache=True):
+        if self.is_completed():
+            return 100
+
         maximum = self.get_maximum(cache=cache)
 
         if maximum > 0:
