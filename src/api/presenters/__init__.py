@@ -91,7 +91,7 @@ class MediaListPresenter(BasePresenter):
         collecting_icon = "<i class='m-2 fa-solid fa-bookmark'></i>" if self.collecting else ""
         favourite_icon = "<i class='m-2 fa-solid fa-heart'></i>" if self.favourite else ""
         score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>" if self.score else ""
-        progress = f"<small class='m-2 font-bold'>{self.to_percent()}%</small>"
+        progress = f"<small class='m-2 font-bold'>{self.to_percent()}% ({self.get_maximum()})</small>"
         return f"""
         <a href="/manga/{self.media.id}" title="{self.media.romaji}">
             <div class="relative p-2 rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center" style="background-image: url('{self.media.cover_image}');">
