@@ -3,7 +3,7 @@
 {% block title %}{{ presenter.media.romaji }} | {{ username }} manga review{% endblock %}
 
 {% block content %}
-<div class="relative text-4xl">
+<div class="relative text-4xl z-10">
     <div class="fixed p-8 top-0 left-0">
         <a href="/">
             <i class="fa-solid fa-circle-chevron-left custom-colour bg-white rounded-full p-1"></i>
@@ -11,10 +11,11 @@
     </div>
 </div>
 
-<div class="p-4">
-    <div id="bg-img" class="rounded w-full h-[150px] sm:h-[300px] bg-no-repeat bg-cover bg-center"></div>
+<div class="relative z-[-10]">
+    <div id="bg-img" class="fixed left-0 top-0 w-full h-[150px] min-h-[150px] sm:h-[300px] bg-no-repeat bg-cover bg-center"></div>
 </div>
-<div class="mx-auto max-w-7xl px-4 mt-8">
+
+<div class="bg-black/50 rounded mx-auto max-w-7xl p-4 mt-[150px] sm:mt-[310px] backdrop-blur-lg">
     <div class="flex flex-col sm:flex-row gap-4">
         <div id="cover-img" class="rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center"></div>
         <div class="flex-col w-full">
@@ -33,7 +34,19 @@
                 <p class="font-thin">{{ presenter.media.english_title }}</p>
             {% endif %}
             <hr class="border-2 custom-colour my-4">
+            {% if (presenter.is_current() or presenter.is_dropped()) and presenter.started_at %}
+                <p>Started on: {{ presenter.started_at.strftime("%B %d, %Y") }}</p>
+            {% endif %}
+            {% if presenter.is_completed() and presenter.completed_at %}
+                <p>Completed on: {{ presenter.completed_at.strftime("%B %d, %Y") }}</p>
+            {% endif %}
+            <p>Progress: {{ presenter.progress }} / {{ presenter.get_maximum() }}</p>
         </div>
+    </div>
+    <div class="my-8">
+        <h3 class="text-2xl font-bold mb-4">Description:</h3>
+        {{ presenter.media.description | safe }}
+        <hr class="divide-dashed divide-y custom-colour my-4">
     </div>
     <div class="grid grid-cols-1 grid-flow-row-dense gap-4 sm:grid-cols-2 my-8">
         <div class="col-span-1">
@@ -45,7 +58,6 @@
                 <h3 class="text-2xl font-bold mb-4">Progress:</h3>
                 <div class="flex flex-col items-center">
                     {{ progress_knob.to_html() | safe }}
-                    <p class="mt-4">{{ presenter.progress }} / {{ presenter.get_maximum() }}</p>
                 </div>
             </div>
             <div class="mb-4">

@@ -24,6 +24,7 @@ coverImage {
     color
 }
 bannerImage
+description
 """
 
 LIST_DATA = """

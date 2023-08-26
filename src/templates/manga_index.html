@@ -20,6 +20,34 @@
     <h1 class="text-4xl font-bold">{{ username }} manga reviews</h1>
 </div>
 
+<div class="flex flex-wrap gap-2 my-4 justify-center">
+    <div class="whitespace-nowrap text-sm text-[#90ee90] uppercase">
+        <i class="fa-solid fa-square"></i>
+        Reading ({{ floor(percent_reading) }}%)
+    </div>
+    <div class="whitespace-nowrap text-sm text-[#65b2ff] uppercase">
+        <i class="fa-solid fa-square"></i>
+        Completed ({{ floor(percent_completed) }}%)
+    </div>
+    <div class="whitespace-nowrap text-sm text-[#FFD966] uppercase">
+        <i class="fa-solid fa-square"></i>
+        Planning ({{ floor(percent_planning) }}%)
+    </div>
+    <div class="whitespace-nowrap text-sm text-[#ff6961] uppercase">
+        <i class="fa-solid fa-square"></i>
+        Paused ({{ floor(percent_paused) }}%)
+    </div>
+</div>
+
+<svg width="100%" height="10" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+    <rect x="0" y="0" width="{{ percent_reading }}%" height="10" fill="#90ee90"/>
+    <rect x="{{ percent_reading }}%" y="0" width="{{ percent_completed }}%" height="10" fill="#65b2ff"/>
+    <rect x="{{ percent_reading + percent_completed }}%" y="0" width="{{ percent_planning }}%" height="10" fill="#FFD966"/>
+    <rect x="{{ percent_reading + percent_completed + percent_planning }}%" y="0" width="{{ percent_paused }}%" height="10" fill="#ff6961"/>
+
+</svg>
+
 <div class="mx-auto max-w-7xl px-4">
     <div class="my-4 flex flex-col items-center" id="reading">
         <h3 class="underline text-2xl font-bold my-8">Reading - {{ len_reading }}</h1>

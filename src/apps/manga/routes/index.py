@@ -15,6 +15,11 @@ def manga_index():
     len_completed = len(completed)
     len_paused = len(paused)
     len_planning = len(planning)
+    total_manga =  len_reading + len_completed + len_planning + len_paused
+    percent_reading = (len_reading / total_manga) * 100
+    percent_completed = (len_completed / total_manga) * 100
+    percent_planning = (len_planning / total_manga) * 100
+    percent_paused = (len_paused / total_manga) * 100
     return render_template(
         "manga_index.html",
         reading=reading,
@@ -24,5 +29,9 @@ def manga_index():
         len_reading=len_reading,
         len_completed=len_completed,
         len_paused=len_paused,
-        len_planning=len_planning
+        len_planning=len_planning,
+        percent_reading=percent_reading,
+        percent_completed=percent_completed,
+        percent_paused=percent_paused,
+        percent_planning=percent_planning
     )

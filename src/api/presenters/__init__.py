@@ -13,6 +13,7 @@ class MediaPresenter(BasePresenter):
     def __init__(self, data):
         super(MediaPresenter, self).__init__(data)
         self.id = self.data["id"]
+        self.description = self.data["description"]
         self.romaji = self.data["title"]["romaji"]
         self.english_title = self.data["title"]["english"]
         self.banner_image = self.data["bannerImage"] or url_for("static", filename="img/default_banner.png")
@@ -49,6 +50,9 @@ class MediaListPresenter(BasePresenter):
 
     def is_completed(self):
         return self.status == "COMPLETED"
+
+    def is_dropped(self):
+        return self.status == "PAUSED" or self.status == "DROPPED"
 
     def generate_date(self, date_dict):
         if not date_dict:
@@ -94,13 +98,13 @@ class MediaListPresenter(BasePresenter):
         progress = f"<small class='m-2 font-bold'>{self.to_percent()}% ({self.get_maximum()})</small>"
         return f"""
         <a href="/manga/{self.media.id}" title="{self.media.romaji}">
-            <div class="relative p-2 rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center" style="background-image: url('{self.media.cover_image}');">
-                <div class="text-gray-100 absolute rounded inline-block right-2 bottom-2 backdrop-blur-lg" style="background-color: {self.media.color}80;">
+            <div class="group grayscale hover:grayscale-0 relative p-2 rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center transition duration-300 ease-in-out" style="background-image: url('{self.media.cover_image}');">
+                <div class="opacity-0 group-hover:opacity-100 text-gray-100 absolute rounded inline-block right-2 bottom-2 backdrop-blur-lg transition duration-300 ease-in-out" style="background-color: {self.media.color}80;">
                     {score_icon}
                     {favourite_icon}
                     {collecting_icon}
                 </div>
-                <div class="text-gray-100 absolute rounded inline-block right-2 top-2 backdrop-blur-lg" style="background-color: {self.media.color}80;">
+                <div class="opacity-0 group-hover:opacity-100 text-gray-100 absolute rounded inline-block right-2 top-2 backdrop-blur-lg transition duration-300 ease-in-out" style="background-color: {self.media.color}80;">
                     {progress}
                 </div>
             </div>
