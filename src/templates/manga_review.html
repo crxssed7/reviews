@@ -38,7 +38,7 @@
             <p>Status: {{ presenter.media.status.lower() }}</p>
         </div>
     </div>
-    {% if time_range %}
+    {% if time_range != None %}
         <div class="mt-8 flex justify-center">
             <p>{{ time_range.days }} days</p>
         </div>
