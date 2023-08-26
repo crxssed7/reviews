@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_caching import Cache
-from math import floor
 
 from apps.manga.views import manga
 
@@ -18,7 +17,7 @@ def create_app():
     app.config.from_mapping(config)
     app.jinja_env.globals.update(username=USER_NAME)
     app.jinja_env.globals.update(avatar=USER_AVATAR)
-    app.jinja_env.globals.update(floor=floor)
+    app.jinja_env.globals.update(round=round)
     app.register_blueprint(manga, url_prefix="/")
 
     cache = Cache(app)
