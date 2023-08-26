@@ -1,3 +1,4 @@
+from datetime import date
 from flask import render_template, current_app
 
 from api.anilist import get_media_list
@@ -20,6 +21,9 @@ def manga_review(anilist_manga_id):
 
         cache.set(f"{presenter.media.id}.review", review_content)
 
-        return render_template("manga_review.html", presenter=presenter, score_knob=score_knob, progress_knob=progress_knob, review_content=review_content)
+        completed_at_or_today = presenter.completed_at if presenter.completed_at else date.today()
+        time_range = completed_at_or_today - presenter.started_at if presenter.started_at else None
+
+        return render_template("manga_review.html", presenter=presenter, score_knob=score_knob, progress_knob=progress_knob, review_content=review_content, time_range=time_range, completed_at_or_today=completed_at_or_today)
     except APIException as exception:
         return "Not found", exception.status_code

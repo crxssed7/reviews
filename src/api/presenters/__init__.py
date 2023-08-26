@@ -18,7 +18,7 @@ class MediaPresenter(BasePresenter):
         self.english_title = self.data["title"]["english"]
         self.banner_image = self.data["bannerImage"] or url_for("static", filename="img/default_banner.png")
         self.cover_image = self.data["coverImage"]["large"]
-        self.color = self.data["coverImage"]["color"] or "#202020"
+        self.color = self.data["coverImage"]["color"] or "#808080"
         self.chapters = self.data["chapters"]
         self.status = self.data["status"]
         self.start_date = self.data["startDate"]
