@@ -17,6 +17,7 @@ startDate {
 }
 status
 chapters
+volumes
 coverImage {
     extraLarge
     large
@@ -25,6 +26,10 @@ coverImage {
 }
 bannerImage
 description
+tags {
+    name
+}
+genres
 """
 
 LIST_DATA = """

@@ -5,6 +5,13 @@ from flask import url_for
 
 from helpers import get_cached_latest_chapter, latest_chapter_by_anilist
 
+DEMOGRAPHS = [
+    "Shounen",
+    "Seinen",
+    "Shoujo",
+    "Josei"
+]
+
 class BasePresenter:
     def __init__(self, data):
         self.data = data
@@ -20,11 +27,17 @@ class MediaPresenter(BasePresenter):
         self.cover_image = self.data["coverImage"]["large"]
         self.color = self.data["coverImage"]["color"] or "#808080"
         self.chapters = self.data["chapters"]
+        self.volumes = self.data["volumes"]
         self.status = self.data["status"]
         self.start_date = self.data["startDate"]
+        self.tags = self.data["tags"]
+        self.genres = self.data["genres"]
 
     def is_finished(self):
         return self.status == "FINISHED"
+
+    def demographs(self):
+        return list(filter(lambda x: x["name"] in DEMOGRAPHS, self.tags))
 
 class MediaListPresenter(BasePresenter):
     def __init__(self, data):

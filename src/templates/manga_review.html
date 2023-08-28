@@ -36,6 +36,15 @@
             <hr class="border-t-2 border-dashed custom-colour my-4">
             <p>Progress: {{ presenter.progress }} / {{ presenter.get_maximum() }}</p>
             <p>Status: {{ presenter.media.status.lower() }}</p>
+            <p>Volumes: {{ presenter.media.volumes if presenter.media.volumes else "?" }}</p>
+            <div class="flex flex-wrap gap-2 my-2">
+                {% for demograph in presenter.media.demographs() %}
+                    <p class="rounded-md py-1 px-2 bg-custom-colour font-bold text-sm">{{ demograph.name }}</p>
+                {% endfor %}
+                {% for genre in presenter.media.genres %}
+                    <p class="rounded-md py-1 px-2 bg-custom-colour font-bold text-sm">{{ genre }}</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
     {% if time_range != None %}
