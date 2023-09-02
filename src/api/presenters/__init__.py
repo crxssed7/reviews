@@ -110,7 +110,7 @@ class MediaListPresenter(BasePresenter):
         score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>" if self.score else ""
         progress = f"<small class='m-2 font-bold'>{self.to_percent()}% ({self.get_maximum()})</small>"
         return f"""
-        <a href="/manga/{self.media.id}" title="{self.media.romaji}">
+        <a href="/manga/{self.media.id}" title="{self.media.romaji}" class="relative">
             <div class="group grayscale hover:grayscale-0 relative p-2 rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center transition duration-300 ease-in-out" style="background-image: url('{self.media.cover_image}');">
                 <div class="opacity-0 group-hover:opacity-100 text-gray-100 absolute rounded inline-block right-2 bottom-2 backdrop-blur-lg transition duration-300 ease-in-out" style="background-color: {self.media.color}80;">
                     {score_icon}
@@ -121,6 +121,7 @@ class MediaListPresenter(BasePresenter):
                     {progress}
                 </div>
             </div>
+            <div class="z-[-10] absolute left-0 right-0 top-0 bottom-0 my-auto mx-auto w-[25px] h-[25px] loader border-[2px] border-t-[5px] rounded-full animate-spin" style="border-top: 5px solid  {self.media.color};"></div>
         </a>
         """
 
