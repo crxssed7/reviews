@@ -11,7 +11,11 @@ def status(status):
 
     media_list_collection = get_media_list_collection(USER_ID, ["UPDATED_TIME_DESC"])
     presenter = MediaListCollectionPresenter(media_list_collection)
-    entries = presenter.get_status(al_status).entries
+    entries = presenter.get_status(al_status)
+    if status == "completed":
+        entries = entries.sort_by("completed_at", reverse=True).entries
+    else:
+        entries = entries.entries
     entry_count = len(entries)
 
     len_reading = len(presenter.get_status("CURRENT").entries)
