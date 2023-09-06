@@ -3,7 +3,7 @@ import math
 
 from flask import url_for
 
-from helpers import get_cached_latest_chapter, latest_chapter_by_anilist
+from helpers import get_cached_latest_chapter, latest_chapter_by_anilist, AL_STATUSES
 
 DEMOGRAPHS = [
     "Shounen",
@@ -57,6 +57,7 @@ class MediaListPresenter(BasePresenter):
         self.priority = self.data["priority"]
         self.completed_at = self.generate_date(self.data["completedAt"])
         self.started_at = self.generate_date(self.data["startedAt"])
+        self.index_status = AL_STATUSES.get(self.status)
 
     def is_current(self):
         return self.status == "CURRENT"

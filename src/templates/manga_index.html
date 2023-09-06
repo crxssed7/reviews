@@ -1,42 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="relative z-10">
-    <div class="fixed p-8 top-0 left-0">
-        <i id="hamburger" class="fa-solid fa-bars p-1 text-4xl cursor-pointer"></i>
-    </div>
-    <div id="toc" class="fixed hidden p-6 bg-white text-black font-bold top-[100px] left-[35px] rounded-lg">
-        <div class="flex flex-col gap-4">
-            <a href="#reading">Reading</a>
-            <a href="#completed">Completed</a>
-            <a href="#planning">Planning</a>
-            <a href="#paused">Paused</a>
-        </div>
-    </div>
-</div>
-
 <div class="m-6 flex flex-col items-center justify-center content-center text-center p-20">
     <img src="{{ avatar }}" alt="" class="m-3.5 border-4 border-slate-50 rounded-full w-[100px] h-[100px]">
     <h1 class="text-4xl font-bold">{{ username }} manga reviews</h1>
 </div>
 
-<div class="flex flex-wrap gap-2 my-4 justify-center">
-    <div class="whitespace-nowrap text-sm text-[#90ee90] uppercase">
-        <i class="fa-solid fa-square"></i>
-        Reading ({{ round(percent_reading) }}%)
-    </div>
-    <div class="whitespace-nowrap text-sm text-[#65b2ff] uppercase">
-        <i class="fa-solid fa-square"></i>
-        Completed ({{ round(percent_completed) }}%)
-    </div>
-    <div class="whitespace-nowrap text-sm text-[#FFD966] uppercase">
-        <i class="fa-solid fa-square"></i>
-        Planning ({{ round(percent_planning) }}%)
-    </div>
-    <div class="whitespace-nowrap text-sm text-[#ff6961] uppercase">
-        <i class="fa-solid fa-square"></i>
-        Paused ({{ round(percent_paused) }}%)
-    </div>
+<div class="flex flex-wrap gap-4 my-4 justify-center">
+    <a href="/reading">
+        <div class="whitespace-nowrap text-sm text-[#90ee90] uppercase px-3 py-2 hover:bg-gray-800 rounded cursor-pointer {% if status == 'reading' %} bg-gray-800 {% endif %}">
+            <i class="fa-solid fa-square"></i>
+            Reading ({{ round(percent_reading) }}%)
+        </div>
+    </a>
+    <a href="/completed">
+        <div class="whitespace-nowrap text-sm text-[#65b2ff] uppercase px-3 py-2 hover:bg-gray-800 rounded cursor-pointer {% if status == 'completed' %} bg-gray-800 {% endif %}">
+            <i class="fa-solid fa-square"></i>
+            Completed ({{ round(percent_completed) }}%)
+        </div>
+    </a>
+    <a href="/planning">
+        <div class="whitespace-nowrap text-sm text-[#FFD966] uppercase px-3 py-2 hover:bg-gray-800 rounded cursor-pointer {% if status == 'planning' %} bg-gray-800 {% endif %}">
+            <i class="fa-solid fa-square"></i>
+            Planning ({{ round(percent_planning) }}%)
+        </div>
+    </a>
+    <a href="/paused">
+        <div class="whitespace-nowrap text-sm text-[#ff6961] uppercase px-3 py-2 hover:bg-gray-800 rounded cursor-pointer {% if status == 'paused' %} bg-gray-800 {% endif %}">
+            <i class="fa-solid fa-square"></i>
+            Paused ({{ round(percent_paused) }}%)
+        </div>
+    </a>
 </div>
 
 <svg width="100%" height="10" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -49,39 +43,13 @@
 </svg>
 
 <div class="mx-auto max-w-7xl px-4">
-    <div class="my-4 flex flex-col items-center" id="reading">
-        <h3 class="underline text-2xl font-bold my-8">Reading - {{ len_reading }}</h1>
+    <div class="my-4 flex flex-col items-center">
+        <h3 class="underline text-2xl font-bold my-8">{{ status.title() }} - {{ entry_count }}</h1>
         <div class="flex justify-center flex-wrap gap-2">
-            {% for entry in reading %}
-            {{ entry.to_html() | safe }}
-            {% endfor %}
-        </div>
-    </div>
-    <div class="my-4 flex flex-col items-center" id="completed">
-        <h3 class="underline text-2xl font-bold my-8">Completed - {{ len_completed }}</h1>
-        <div class="flex justify-center flex-wrap gap-2">
-            {% for entry in completed %}
-            {{ entry.to_html() | safe }}
-            {% endfor %}
-        </div>
-    </div>
-    <div class="my-4 flex flex-col items-center" id="planning">
-        <h3 class="underline text-2xl font-bold my-8">Planning - {{ len_planning }}</h1>
-        <div class="flex justify-center flex-wrap gap-2">
-            {% for entry in planning %}
-            {{ entry.to_html() | safe }}
-            {% endfor %}
-        </div>
-    </div>
-    <div class="my-4 flex flex-col items-center" id="paused">
-        <h3 class="underline text-2xl font-bold my-8">Paused - {{ len_paused }}</h1>
-        <div class="flex justify-center flex-wrap gap-2">
-            {% for entry in paused %}
+            {% for entry in entries %}
             {{ entry.to_html() | safe }}
             {% endfor %}
         </div>
     </div>
 </div>
-
-<script src="{{ url_for('static',filename='js/table_of_contents.js') }}"></script>
 {% endblock %}

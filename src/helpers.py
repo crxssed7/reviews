@@ -12,6 +12,15 @@ USER_NAME = ENV.get("USER_NAME")
 USER_AVATAR = ENV.get("USER_AVATAR", "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png")
 DEBUG = ENV.get("REVIEWS_DEBUG", "False").lower() in ("true", "1", "t")
 
+STATUSES = {
+    "reading": "CURRENT",
+    "completed": "COMPLETED",
+    "planning": "PLANNING",
+    "paused": "PAUSED"
+}
+
+AL_STATUSES = { STATUSES[k]:k for k in STATUSES}
+
 def isnum(record):
     value = record["record"]["chapter"]
     return str(value).isdigit()
