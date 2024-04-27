@@ -111,7 +111,7 @@ class MediaListPresenter(BasePresenter):
         score_icon = ""
         if self.score:
             if self.score == 10:
-                score_icon = "<div><i class='m-2 fa-solid fa-1'></i><i class='m-2 fa-solid fa-0'></i></div>"
+                score_icon = "<i class='m-2 fa-brands fa-web-awesome'></i>"
             else:
                 score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>"
         progress = f"<small class='m-2 font-bold'>{self.to_percent()}% ({self.get_maximum()})</small>"
