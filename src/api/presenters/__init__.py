@@ -108,7 +108,12 @@ class MediaListPresenter(BasePresenter):
     def to_html(self):
         collecting_icon = "<i class='m-2 fa-solid fa-bookmark'></i>" if self.collecting else ""
         favourite_icon = "<i class='m-2 fa-solid fa-heart'></i>" if self.favourite else ""
-        score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>" if self.score else ""
+        score_icon = ""
+        if self.score:
+            if self.score == 10:
+                score_icon = "<div><i class='m-2 fa-solid fa-1'></i><i class='m-2 fa-solid fa-0'></i></div>"
+            else:
+                score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>"
         progress = f"<small class='m-2 font-bold'>{self.to_percent()}% ({self.get_maximum()})</small>"
         return f"""
         <a href="/manga/{self.media.id}" title="{self.media.romaji}" class="relative">
