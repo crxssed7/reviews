@@ -40,7 +40,7 @@ class MediaPresenter(BasePresenter):
         return list(filter(lambda x: x["name"] in DEMOGRAPHS, self.tags))
 
 class MediaListPresenter(BasePresenter):
-    def __init__(self, data):
+    def __init__(self, data, activities):
         super(MediaListPresenter, self).__init__(data)
         self.media = MediaPresenter(self.data["media"])
         self.custom_lists = self.data.get("customLists")
@@ -58,6 +58,10 @@ class MediaListPresenter(BasePresenter):
         self.completed_at = self.generate_date(self.data["completedAt"])
         self.started_at = self.generate_date(self.data["startedAt"])
         self.index_status = AL_STATUSES.get(self.status)
+        if activities:
+            self.activities = []
+            for activity in activities["activities"]:
+                self.activities.append(ActivityPresenter(activity))
 
     def is_current(self):
         return self.status == "CURRENT"
@@ -139,7 +143,7 @@ class MediaListGroupPresenter(BasePresenter):
         self.status = self.data["status"]
         self.entries = []
         for entry in self.data["entries"]:
-            self.entries.append(MediaListPresenter(entry))
+            self.entries.append(MediaListPresenter(entry, None))
 
     def sort_by(self, attr, reverse = False):
         ordered = self.entries
@@ -160,3 +164,21 @@ class MediaListCollectionPresenter(BasePresenter):
         if len(status_list) > 0:
             return status_list[0]
         return MediaListGroupPresenter({"name": "", "isCustomList": False, "status": status, "entries": []})
+
+class ActivityPresenter(BasePresenter):
+    def __init__(self, data):
+        super(ActivityPresenter, self).__init__(data)
+        self.created_at = datetime.datetime.utcfromtimestamp(self.data["createdAt"])
+        self.status = self.data["status"]
+        self.progress = self.data["progress"]
+        self.colour = self.get_colour()
+
+    def get_colour(self):
+        colours = {
+            "plans to read": "#FFD966",
+            "read chapter": "#90ee90",
+            "completed": "#65b2ff",
+            "paused reading": "#ff6961",
+            "dropped": "#ff6961"
+        }
+        return colours.get(self.status, "white")

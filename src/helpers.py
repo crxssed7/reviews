@@ -82,3 +82,12 @@ def get_review_content(presenter):
         return review["body"]
 
     return presenter.notes if presenter.notes else "I haven't written a review for this manga yet."
+
+def get_and_cache_activities(anilist_manga_id, page = 1):
+    cache = current_app.cache
+
+    existing_cache = cache.get(f"{anilist_manga_id}.activities.{page}")
+    if existing_cache:
+        return existing_cache
+
+    return get_activity(USER_ID, anilist_manga_id, page=page)

@@ -4,7 +4,7 @@ from flask import render_template, current_app
 from api.anilist import get_media_list
 from api.exceptions import APIException
 from api.presenters import MediaListPresenter
-from helpers import USER_ID, get_review_content
+from helpers import USER_ID, get_review_content, get_and_cache_activities
 from knobs import ScoreKnob, ProgressKnob
 
 def manga_review(anilist_manga_id):
@@ -12,7 +12,10 @@ def manga_review(anilist_manga_id):
 
     try:
         media_list = get_media_list(anilist_manga_id, USER_ID)
-        presenter = MediaListPresenter(media_list)
+        activities = get_and_cache_activities(anilist_manga_id)
+        cache.set(f"{anilist_manga_id}.activities.1", activities)
+
+        presenter = MediaListPresenter(media_list, activities)
         score_knob = ScoreKnob(presenter.score, 200, presenter.media.color)
 
         progress_knob = ProgressKnob(presenter.to_percent(cache=False), 200, presenter.media.color)

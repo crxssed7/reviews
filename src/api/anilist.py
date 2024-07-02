@@ -151,3 +151,32 @@ def get_review(user_id, anilist_manga_id, safe = False):
 
     data = request(query, variables, safe=safe)
     return get_data(data, "Review")
+
+def get_activity(user_id, anilist_manga_id, page = 1, safe = False):
+    query = """
+    query ($userId: Int, $mediaId: Int, $page: Int) {
+        Page(page: $page) {
+            activities(userId: $userId, mediaId: $mediaId) {
+                ... on ListActivity {
+                    createdAt
+                    media {
+                        title {
+                            userPreferred
+                        }
+                    }
+                    status
+                    progress
+                }
+            }
+        }
+    }
+    """
+
+    variables = {
+        "userId": user_id,
+        "mediaId": anilist_manga_id,
+        "page": page
+    }
+
+    data = request(query, variables, safe=safe)
+    return get_data(data, "Page")
