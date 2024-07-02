@@ -58,10 +58,12 @@ class MediaListPresenter(BasePresenter):
         self.completed_at = self.generate_date(self.data["completedAt"])
         self.started_at = self.generate_date(self.data["startedAt"])
         self.index_status = AL_STATUSES.get(self.status)
+        self.number_of_activities = 0
         if activities:
             self.activities = []
             for activity in activities["activities"]:
                 self.activities.append(ActivityPresenter(activity))
+            self.number_of_activities = len(self.activities)
 
     def is_current(self):
         return self.status == "CURRENT"
