@@ -49,7 +49,6 @@ function handleResponse(data) {
         activitiesContainer.removeEventListener('scroll', handleScroll)
     }
 
-    console.log(activities)
     activities.forEach((activity) => {
         buildActivity(activity)
     })
