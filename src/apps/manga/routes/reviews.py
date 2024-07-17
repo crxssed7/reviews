@@ -13,8 +13,6 @@ def manga_review(anilist_manga_id):
     try:
         media_list = get_media_list(anilist_manga_id, USER_ID)
         activities = get_and_cache_activities(anilist_manga_id)
-        if activities:
-            cache.set(f"{anilist_manga_id}.activities.1", activities)
 
         presenter = MediaListPresenter(media_list, activities)
         score_knob = ScoreKnob(presenter.score, 200, presenter.media.color)

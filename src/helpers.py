@@ -90,4 +90,7 @@ def get_and_cache_activities(anilist_manga_id, page = 1):
     if existing_cache:
         return existing_cache
 
-    return get_activity(USER_ID, anilist_manga_id, page=page)
+    activities = get_activity(USER_ID, anilist_manga_id, page=page)
+    cache.set(f"{anilist_manga_id}.activities.{page}", activities)
+
+    return activities
