@@ -79,6 +79,7 @@ def get_review_content(presenter):
 
     review = get_review(USER_ID, presenter.media.id, safe=True)
     if review:
+        cache.set(f"{presenter.media.id}.review", review["body"])
         return review["body"]
 
     return presenter.notes if presenter.notes else "I haven't written a review for this manga yet."
@@ -94,3 +95,16 @@ def get_and_cache_activities(anilist_manga_id, page = 1):
     cache.set(f"{anilist_manga_id}.activities.{page}", activities)
 
     return activities
+
+def recursively_retrieve_activities(anilist_manga_id, activities = [], page = 1):
+    results = get_and_cache_activities(anilist_manga_id, page=page)
+
+    if not results:
+        return activities
+
+    if len(results["activities"]) == 0:
+        return activities
+
+    new_activities = activities + results["activities"]
+
+    return recursively_retrieve_activities(anilist_manga_id, activities=new_activities, page=page+1)

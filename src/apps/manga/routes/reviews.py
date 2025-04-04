@@ -1,18 +1,18 @@
 from datetime import date
+import datetime
 from flask import render_template, current_app, jsonify
 
 from api.anilist import get_media_list
 from api.exceptions import APIException
 from api.presenters import MediaListPresenter, ActivityPresenter
-from helpers import USER_ID, get_review_content, get_and_cache_activities
+from helpers import USER_ID, get_review_content, get_and_cache_activities, recursively_retrieve_activities
 from knobs import ScoreKnob, ProgressKnob
 
 def manga_review(anilist_manga_id):
-    cache = current_app.cache
-
     try:
         media_list = get_media_list(anilist_manga_id, USER_ID)
-        activities = get_and_cache_activities(anilist_manga_id)
+        # TODO: Extract this, make the frontend request it
+        activities = recursively_retrieve_activities(anilist_manga_id)
 
         presenter = MediaListPresenter(media_list, activities)
         score_knob = ScoreKnob(presenter.score, 200, presenter.media.color)
@@ -21,12 +21,9 @@ def manga_review(anilist_manga_id):
 
         review_content = get_review_content(presenter)
 
-        cache.set(f"{presenter.media.id}.review", review_content)
+        print(presenter.durations)
 
-        completed_at_or_today = presenter.completed_at if presenter.completed_at else date.today()
-        time_range = completed_at_or_today - presenter.started_at if presenter.started_at else None
-
-        return render_template("manga_review.html", presenter=presenter, score_knob=score_knob, progress_knob=progress_knob, review_content=review_content, time_range=time_range, completed_at_or_today=completed_at_or_today)
+        return render_template("manga_review.html", presenter=presenter, score_knob=score_knob, progress_knob=progress_knob, review_content=review_content)
     except APIException as exception:
         return "Not found", exception.status_code
 
@@ -40,7 +37,6 @@ def load_activities(anilist_manga_id, page):
             return jsonify({"activities": []})
 
         activity_response = []
-        cache.set(f"{anilist_manga_id}.activities.{page}", activities)
         for activity in activities["activities"]:
             presenter = ActivityPresenter(activity)
             activity_response.append({

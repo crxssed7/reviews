@@ -2,12 +2,6 @@
 
 {% block title %}{{ presenter.media.romaji }} | {{ username }} manga review{% endblock %}
 
-{% block extrahead %}
-{% if presenter.number_of_activities >= 50 %}
-<script src="{{ url_for('static',filename='js/activity_loader.js') }}"></script>
-{% endif %}
-{% endblock %}
-
 {% block content %}
 <div class="relative text-4xl z-10">
     <div class="fixed p-8 top-0 left-0">
@@ -58,9 +52,9 @@
             </div>
         </div>
     </div>
-    {% if time_range != None %}
+    {% if presenter.started_at != None %}
         <div class="mt-8 flex justify-center">
-            <p>{{ time_range.days }} days</p>
+            <p>{{ presenter.total_duration() }} days</p>
         </div>
         <div class="flex items-center">
             <div class="flex flex-col items-center gap-4 w-max">
@@ -73,7 +67,7 @@
         </div>
         <div class="mb-8 flex justify-between">
             <p>{{ presenter.started_at.strftime("%B %d, %Y") }}</p>
-            <p>{{ completed_at_or_today.strftime("%B %d, %Y") }}</p>
+            <p>{{ presenter.completed_at_or_today().strftime("%B %d, %Y") }}</p>
         </div>
     {% endif %}
 
@@ -102,20 +96,22 @@
             </div>
         </div>
     </div>
-    <h3 class="text-2xl font-bold mb-4">Timeline:</h3>
-    <div id="activities"
-         class="flex gap-8 w-full overflow-x-auto pb-4"
-         data-activities-base-url="/manga/{{ presenter.media.id }}/activities/">
-        {% for activity in presenter.activities %}
-        <div class="flex flex-col gap-4 items-center justify-center h-[200px] min-w-[265px] border-2 rounded-md" style="border-color: {{ activity.colour }}; color: {{ activity.colour }};">
-            <p class="font-thin tracking-widest uppercase">{{ activity.status }}</p>
-            {% if activity.progress %}
-            <p class="text-4xl font-bold">{{ activity.progress }}</p>
-            {% endif %}
-            <p class="font-thin tracking-widest uppercase">{{ activity.created_at.strftime("%B %d %Y, %H:%M") }}</p>
+    {% if presenter.started_at != None %}
+        <h3 class="text-2xl font-bold mb-4">Timeline:</h3>
+        <div id="activities"
+            class="flex gap-8 w-full overflow-x-auto pb-4"
+            data-activities-base-url="/manga/{{ presenter.media.id }}/activities/">
+            {% for activity in presenter.activities %}
+            <div class="flex flex-col gap-4 items-center justify-center h-[200px] min-w-[265px] border-2 rounded-md" style="border-color: {{ activity.colour }}; color: {{ activity.colour }};">
+                <p class="font-thin tracking-widest uppercase">{{ activity.status }}</p>
+                {% if activity.progress %}
+                <p class="text-4xl font-bold">{{ activity.progress }}</p>
+                {% endif %}
+                <p class="font-thin tracking-widest uppercase">{{ activity.created_at.strftime("%B %d %Y, %H:%M") }}</p>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    {% end %}
 </div>
 <script>
     const bannerImage = "{{ presenter.media.banner_image }}";

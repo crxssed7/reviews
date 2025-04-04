@@ -1,5 +1,6 @@
 import datetime
 import math
+from typing import List
 
 from flask import url_for
 
@@ -59,11 +60,42 @@ class MediaListPresenter(BasePresenter):
         self.started_at = self.generate_date(self.data["startedAt"])
         self.index_status = AL_STATUSES.get(self.status)
         self.number_of_activities = 0
+        self.activities: List[ActivityPresenter] = []
         if activities:
-            self.activities = []
-            for activity in activities["activities"]:
+            for activity in activities:
                 self.activities.append(ActivityPresenter(activity))
             self.number_of_activities = len(self.activities)
+            self.durations = self._calculate_durations()
+
+    def total_duration(self):
+        result = 0
+        for duration in self.durations:
+            result += duration["duration"].days
+        return result
+
+    def completed_at_or_today(self):
+        if self.completed_at:
+            return self.completed_at
+
+        if len(self.durations) > 0:
+            return self.durations[-1]["end"]
+
+        return datetime.datetime.today()
+
+    def _calculate_durations(self):
+        durations = []
+        start = self.started_at if self.started_at else datetime.datetime.now()
+        end = self.completed_at if self.completed_at else datetime.datetime.today()
+        for activity in self.activities:
+            if start is not None and ["completed", "paused reading", "dropped"].__contains__(activity.status):
+                durations.append({"start": start, "end": activity.created_at, "duration": activity.created_at - start})
+                start = None
+
+            if start is None and activity.status == "read chapter":
+                start = activity.created_at
+        if len(durations) == 0 and start:
+            durations.append({"start": start, "end": end, "duration": end - start})
+        return durations
 
     def is_current(self):
         return self.status == "CURRENT"
@@ -85,7 +117,7 @@ class MediaListPresenter(BasePresenter):
         if not year or not month or not day:
             return None
 
-        return datetime.date(year, month, day)
+        return datetime.datetime(year, month, day)
 
     def get_maximum(self, cache=True):
         if self.media.chapters:
