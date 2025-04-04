@@ -57,6 +57,7 @@ class MediaListPresenter(BasePresenter):
         self.priority = self.data["priority"]
         self.completed_at = self.generate_date(self.data["completedAt"])
         self.started_at = self.generate_date(self.data["startedAt"])
+        self.created_at = datetime.datetime.fromtimestamp(self.data["createdAt"])
         self.index_status = AL_STATUSES.get(self.status)
         self.number_of_activities = 0
         if activities:
@@ -111,31 +112,19 @@ class MediaListPresenter(BasePresenter):
             return math.floor((self.progress / maximum) * 100)
         return 0
 
-    def to_html(self):
-        collecting_icon = "<i class='m-2 fa-solid fa-bookmark'></i>" if self.collecting else ""
-        favourite_icon = "<i class='m-2 fa-solid fa-heart'></i>" if self.favourite else ""
-        score_icon = ""
+    def score_icon(self):
         if self.score:
             if self.score == 10:
-                score_icon = "<i class='m-2 fa-brands fa-web-awesome'></i>"
-            else:
-                score_icon = f"<i class='m-2 fa-solid fa-{self.score}'></i>"
-        progress = f"<small class='m-2 font-bold'>{self.to_percent()}% ({self.get_maximum()})</small>"
-        return f"""
-        <a href="/manga/{self.media.id}" title="{self.media.romaji}" class="relative">
-            <div class="group grayscale hover:grayscale-0 relative p-2 rounded min-w-[150px] w-[150px] h-[225px] bg-no-repeat bg-cover bg-center transition duration-300 ease-in-out" style="background-image: url('{self.media.cover_image}');">
-                <div class="opacity-0 group-hover:opacity-100 text-gray-100 absolute rounded inline-block right-2 bottom-2 backdrop-blur-lg transition duration-300 ease-in-out" style="background-color: {self.media.color}80;">
-                    {score_icon}
-                    {favourite_icon}
-                    {collecting_icon}
-                </div>
-                <div class="opacity-0 group-hover:opacity-100 text-gray-100 absolute rounded inline-block right-2 top-2 backdrop-blur-lg transition duration-300 ease-in-out" style="background-color: {self.media.color}80;">
-                    {progress}
-                </div>
-            </div>
-            <div class="z-[-10] absolute left-0 right-0 top-0 bottom-0 my-auto mx-auto w-[25px] h-[25px] loader border-[2px] border-t-[5px] rounded-full animate-spin" style="border-top: 5px solid  {self.media.color};"></div>
-        </a>
-        """
+                return "<i class='p-2 fa-brands fa-web-awesome' title='10 / 10'></i>"
+            return f"<i class='p-2 fa-solid fa-{self.score}' title='{self.score} / 10'></i>"
+        return ""
+
+    def reasonable_time(self):
+        if self.completed_at:
+            return f"Started: {self.completed_at.strftime("%B %d, %Y")}"
+        if self.started_at:
+            return f"Started: {self.started_at.strftime("%B %d, %Y")}"
+        return f"Listed: {self.created_at.strftime("%B %d, %Y")}"
 
 class MediaListGroupPresenter(BasePresenter):
     def __init__(self, data):

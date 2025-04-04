@@ -38,6 +38,7 @@ priority
 customLists
 progress
 updatedAt
+createdAt
 completedAt {
     year
     month

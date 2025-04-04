@@ -45,9 +45,42 @@
 <div class="mx-auto max-w-7xl px-4">
     <div class="my-4 flex flex-col items-center">
         <h3 class="underline text-2xl font-bold my-8">{{ status.title() }} - {{ entry_count }}</h1>
-        <div class="flex justify-center flex-wrap gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
             {% for entry in entries %}
-            {{ entry.to_html() | safe }}
+            <a href="manga/{{ entry.media.id }}">
+                <div class="entry hover:rotate-1 transition duration-300 ease-in-out" style="border-color: {{ entry.media.color }}; background-image: url(&quot;{{ entry.media.banner_image }}&quot;); background-color: {{ entry.media.color }};">
+                    <div class="flex entry-bg-img">
+                        <div class="entry-img" style="background-image: url(&quot;{{ entry.media.cover_image }}&quot;);"></div>
+                        <div class="entry-content">
+                            <h5 class="entry-name font-bold">{{ entry.media.english_title or entry.media.romaji }}</h5>
+                            <div>
+                                <p style="margin-bottom: 0px;"><small>{{ entry.reasonable_time() }}</small></p>
+                                <div class="flex justify-between">
+                                    <p style="margin-bottom: 0px;"><small>{{ entry.progress }} / {{ entry.get_maximum() }}</small></p>
+                                    <div class="hidden md:flex icons">
+                                        {% if entry.favourite %}
+                                            <i class="p-2 fa-solid fa-star" title="Favourite"></i>
+                                        {% endif %}
+                                        {% if entry.collecting %}
+                                            <i class="p-2 fa-solid fa-bookmark" title="Collecting"></i>
+                                        {% endif %}
+                                        {{ entry.score_icon() | safe }}
+                                    </div>
+                                </div>
+                                <div class="flex md:hidden icons">
+                                    {% if entry.favourite %}
+                                        <i class="p-2 fa-solid fa-star" title="Favourite"></i>
+                                    {% endif %}
+                                    {% if entry.collecting %}
+                                        <i class="p-2 fa-solid fa-bookmark" title="Collecting"></i>
+                                    {% endif %}
+                                    {{ entry.score_icon() | safe }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
             {% endfor %}
         </div>
     </div>

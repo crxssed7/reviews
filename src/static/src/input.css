@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* TODO: Use Tailwind for all classes */
+.entry {
+    @apply border-4 rounded-[10px] bg-no-repeat bg-center bg-cover overflow-hidden;
+}
+
+.entry-img {
+    @apply mr-[10px] w-[75px] min-w-[75px] h-[75px] bg-cover bg-no-repeat bg-center rounded-[5px];
+}
+
+.entry-bg-img {
+    @apply bg-black/60 backdrop-blur-[3px] p-[10px];
+}
+
+.entry-content {
+    @apply flex flex-col justify-between w-full;
+}
+
+.entry-name {
+    @apply m-0;
+}
+
+.icons {
+    @apply justify-end;
+}
