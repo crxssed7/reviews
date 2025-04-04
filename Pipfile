@@ -10,6 +10,7 @@ flask-caching = "*"
 redis = "*"
 python-dotenv = "*"
 gunicorn = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 

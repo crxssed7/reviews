@@ -1,6 +1,7 @@
 import datetime
 import math
 
+from bs4 import BeautifulSoup
 from flask import url_for
 
 from helpers import get_cached_latest_chapter, latest_chapter_by_anilist, AL_STATUSES
@@ -20,7 +21,7 @@ class MediaPresenter(BasePresenter):
     def __init__(self, data):
         super(MediaPresenter, self).__init__(data)
         self.id = self.data["id"]
-        self.description = self.data["description"]
+        self.description = self._fix_description(self.data["description"])
         self.romaji = self.data["title"]["romaji"]
         self.english_title = self.data["title"]["english"]
         self.banner_image = self.data["bannerImage"] or url_for("static", filename="img/default_banner.png")
@@ -38,6 +39,12 @@ class MediaPresenter(BasePresenter):
 
     def demographs(self):
         return list(filter(lambda x: x["name"] in DEMOGRAPHS, self.tags))
+
+    def _fix_description(self, description):
+        if description is None:
+            return description
+        soup = BeautifulSoup(description, "html.parser")
+        return str(soup)
 
 class MediaListPresenter(BasePresenter):
     def __init__(self, data, activities):
