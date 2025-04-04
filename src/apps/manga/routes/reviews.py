@@ -21,8 +21,6 @@ def manga_review(anilist_manga_id):
 
         review_content = get_review_content(presenter)
 
-        cache.set(f"{presenter.media.id}.review", review_content)
-
         completed_at_or_today = presenter.completed_at if presenter.completed_at else date.today()
         time_range = completed_at_or_today - presenter.started_at if presenter.started_at else None
 

@@ -79,6 +79,7 @@ def get_review_content(presenter):
 
     review = get_review(USER_ID, presenter.media.id, safe=True)
     if review:
+        cache.set(f"{presenter.media.id}.review", review["body"])
         return review["body"]
 
     return presenter.notes if presenter.notes else "I haven't written a review for this manga yet."
