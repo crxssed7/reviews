@@ -121,7 +121,7 @@ class MediaListPresenter(BasePresenter):
 
     def reasonable_time(self):
         if self.completed_at:
-            return f"Started: {self.completed_at.strftime("%B %d, %Y")}"
+            return f"Completed: {self.completed_at.strftime("%B %d, %Y")}"
         if self.started_at:
             return f"Started: {self.started_at.strftime("%B %d, %Y")}"
         return f"Listed: {self.created_at.strftime("%B %d, %Y")}"
