@@ -8,25 +8,25 @@
 
 <div class="flex flex-wrap gap-4 my-4 justify-center">
     <a href="/reading">
-        <div class="whitespace-nowrap text-sm text-[#90ee90] uppercase px-3 py-2 hover:bg-[#1E1E1E] rounded cursor-pointer {% if status == 'reading' %} bg-[#1E1E1E] {% endif %}">
+        <div class="whitespace-nowrap text-sm text-[#90ee90] border-2 border-[#90ee90] uppercase px-3 py-2 hover:bg-[#90ee90] hover:text-black focus:bg-[#90ee90] focus:text-black rounded cursor-pointer transition-all duration-300 ease-in-out {% if status == 'reading' %} bg-[#90ee90] text-black {% endif %}">
             <i class="fa-solid fa-square"></i>
             Reading ({{ round(percent_reading) }}%)
         </div>
     </a>
     <a href="/completed">
-        <div class="whitespace-nowrap text-sm text-[#65b2ff] uppercase px-3 py-2 hover:bg-[#1E1E1E] rounded cursor-pointer {% if status == 'completed' %} bg-[#1E1E1E] {% endif %}">
+        <div class="whitespace-nowrap text-sm text-[#65b2ff] border-2 border-[#65b2ff] uppercase px-3 py-2 hover:bg-[#65b2ff] hover:text-black focus:bg-[#65b2ff] focus:text-black rounded cursor-pointer transition-all duration-300 ease-in-out {% if status == 'completed' %} bg-[#65b2ff] text-black {% endif %}">
             <i class="fa-solid fa-square"></i>
             Completed ({{ round(percent_completed) }}%)
         </div>
     </a>
     <a href="/planning">
-        <div class="whitespace-nowrap text-sm text-[#FFD966] uppercase px-3 py-2 hover:bg-[#1E1E1E] rounded cursor-pointer {% if status == 'planning' %} bg-[#1E1E1E] {% endif %}">
+        <div class="whitespace-nowrap text-sm text-[#FFD966] border-2 border-[#FFD966] uppercase px-3 py-2 hover:bg-[#FFD966] hover:text-black focus:bg-[#FFD966] focus:text-black rounded cursor-pointer transition-all duration-300 ease-in-out {% if status == 'planning' %} bg-[#FFD966] text-black {% endif %}">
             <i class="fa-solid fa-square"></i>
             Planning ({{ round(percent_planning) }}%)
         </div>
     </a>
     <a href="/paused">
-        <div class="whitespace-nowrap text-sm text-[#ff6961] uppercase px-3 py-2 hover:bg-[#1E1E1E] rounded cursor-pointer {% if status == 'paused' %} bg-[#1E1E1E] {% endif %}">
+        <div class="whitespace-nowrap text-sm text-[#ff6961] border-2 border-[#ff6961] uppercase px-3 py-2 hover:bg-[#ff6961] hover:text-black focus:bg-[#ff6961] focus:text-black rounded cursor-pointer transition-all duration-300 ease-in-out {% if status == 'paused' %} bg-[#ff6961] text-black {% endif %}">
             <i class="fa-solid fa-square"></i>
             Paused ({{ round(percent_paused) }}%)
         </div>
@@ -42,7 +42,7 @@
 
 </svg>
 
-<div class="mx-auto max-w-7xl px-4">
+<div class="mx-auto max-w-7xl px-4" id="content">
     <div class="my-4 flex flex-col items-center">
         <h3 class="underline text-2xl font-bold my-8">{{ status.title() }} - {{ entry_count }}</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
