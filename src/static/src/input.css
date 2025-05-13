@@ -4,7 +4,7 @@
 
 /* TODO: Use Tailwind for all classes */
 .entry {
-    @apply border-4 rounded-[10px] bg-no-repeat bg-center bg-cover overflow-hidden;
+    @apply border-4 rounded-[10px] bg-no-repeat bg-center bg-cover overflow-hidden h-full;
 }
 
 .entry-img {
