@@ -28,11 +28,11 @@ def isnum(record):
 def get_cached_latest_chapter(anilist_media):
     return current_app.cache.get(f"{anilist_media.id}.latest_chapter")
 
-def latest_chapter_by_anilist(anilist_media):
+def latest_chapter_by_anilist(anilist_media, skip_cache=False):
     cache = current_app.cache
 
     existing_cache = get_cached_latest_chapter(anilist_media)
-    if existing_cache:
+    if existing_cache and not skip_cache:
         return existing_cache["chapters"], existing_cache["data"]
 
     try:

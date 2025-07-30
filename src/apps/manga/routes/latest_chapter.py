@@ -21,7 +21,7 @@ def manga_lastest_chapter(anilist_manga_id):
     if media.status == "FINISHED":
         return jsonify(build_data(anilist_data, mangaupdates_data, media.chapters))
 
-    chapters, mangaupdates_data = latest_chapter_by_anilist(media)
+    chapters, mangaupdates_data = latest_chapter_by_anilist(media, skip_cache=True)
 
     return jsonify(build_data(anilist_data, mangaupdates_data, chapters))
 
